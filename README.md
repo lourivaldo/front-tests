@@ -1,4 +1,3 @@
-# mangue3-teste
 ![alt tag](http://ctnovatec.com.br/wp-content/uploads/2015/03/nodejs-logo.png)
 
 ## Installation process
