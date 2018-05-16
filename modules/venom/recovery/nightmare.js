@@ -15,7 +15,7 @@ let url_token = null;
 const run = () => { 
     nightmare
         .viewport(1000,1200)
-        .goto('http://localhost:3336/')
+        .goto('http://localhost:3336/#/?type_trip=1&adults=1&children=0&babies=0&baggage_type=1&date_starting=30%2F04%2F2018&date_back=04%2F05%2F2018&destination_id=1052&origin_id=1005&agency_token=%242y%2410%24S0qXnpBq%2FhGeJCIo4AF.Iu86LcagR.DF8I8Xf7cuisWkQGYvQ%2FNCC&companies=1%2C2%2C3%2C4')
 
 
         //open recovery page
@@ -26,7 +26,7 @@ const run = () => {
         //send email
         .insert('#email', 'marcio.lima@mangue3.com')
         .click('#root > div > div.be-wrapper.be-nosidebar-left > div > div > div > div > div > div.panel-body.m-t-md > form > div > div.form-group.row.login-submit > div > button')
-        .wait(5000)
+        .wait(10000)
 
 
         //login inbox

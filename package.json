@@ -5,10 +5,12 @@
   "repository": "https://bitbucket.org/marcius_hsdl/mangue3-teste",
   "main": "test.js",
   "scripts": {
-    "liquidacao": "PROJECT=BUSCA NAME=LIQUIDACAO node test.js",
-    "liquidacao:test": "PROJECT=BUSCA NAME=LIQUIDACAO TYPE=TEST mocha",
-    "revovery": "PROJECT=VENOM NAME=RECOVERY node test.js",
-    "revovery:test": "PROJECT=VENOM NAME=RECOVERY TYPE=TEST mocha"
+    "busca:liquidacao": "PROJECT=BUSCA NAME=LIQUIDACAO node test.js",
+    "busca:liquidacao:test": "PROJECT=BUSCA NAME=LIQUIDACAO TYPE=TEST mocha",
+    "venom:revovery": "PROJECT=VENOM NAME=RECOVERY node test.js",
+    "venom:revovery:test": "PROJECT=VENOM NAME=RECOVERY TYPE=TEST mocha",
+    "venom:liquidacao": "PROJECT=VENOM NAME=LIQUIDACAO node test.js",
+    "venom:liquidacao:test": "PROJECT=VENOM NAME=LIQUIDACAO TYPE=TEST mocha"
   },
   "author": "Marcio Henrique",
   "license": "ISC",

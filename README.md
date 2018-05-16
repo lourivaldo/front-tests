@@ -39,15 +39,20 @@ if nightmare show error 'EACCES: permission denied', use this command:
 sudo npm install nightmare --unsafe-perm=true --allow-root
 ```
 
-You should find that you have two new folder in your project.
-
-* `node_modules` - contains the npm packages for the tools we need such as express and mongoose
+Create a file `.env` like a default file `.env.default`
 
 ### Run application
+
+#### Only nightmare 
+
+npm run [MODULE]:[TEST_NAME]
 ```
-npm run recovery
+npm run busca:liquidacao
 ```
 
-## Adding New Tests
+#### Mocha test
 
-Create folder test inside folder
+npm run [MODULE]:[TEST_NAME]:test
+```
+npm run busca:liquidacao:test
+```
