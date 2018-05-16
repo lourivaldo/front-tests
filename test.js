@@ -25,4 +25,3 @@ if (project === 'VENOM') {
 
     }
 }
-

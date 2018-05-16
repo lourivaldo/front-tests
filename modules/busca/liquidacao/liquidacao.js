@@ -1,12 +1,7 @@
-import {nightmare} from './nightmare';
-import {mocha    } from './mocha';
+const nightmare = require('./nightmare');
+const mocha     = require('./mocha');
 
-export default {
-    mocha: mocha, 
+module.exports = {
+    mocha: mocha,
     nightmare: nightmare
-
 }
-// module.exports = {
-//     mocha: mocha,
-//     nightmare: nightmare
-// }
