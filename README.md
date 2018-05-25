@@ -46,12 +46,14 @@ Create a file `.env` like a default file `.env.default`
 
 npm run [MODULE]:[TEST_NAME]
 ```
-npm run busca:liquidacao
+npm run venom:debit
 ```
 
 #### Mocha test
 
+##### `This section is not implemantated`
+
 npm run [MODULE]:[TEST_NAME]:test
 ```
-npm run busca:liquidacao:test
+npm run venom:debit:test
 ```

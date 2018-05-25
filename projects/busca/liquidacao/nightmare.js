@@ -141,14 +141,14 @@ const run = () => {
 
 
         //transfer
-        .wait('#root > div > div:nth-child(2) > content > div > div > div:nth-child(2) > div > div > div > div > div > div:nth-child(2) > div:nth-child(2) > div > img')
-        .click('#root > div > div:nth-child(2) > content > div > div > div:nth-child(2) > div > div > div > div > div > div:nth-child(2) > div:nth-child(2) > div > img')
+        // .wait('#root > div > div:nth-child(2) > content > div > div > div:nth-child(2) > div > div > div > div > div > div:nth-child(2) > div:nth-child(2) > div > img')
+        // .click('#root > div > div:nth-child(2) > content > div > div > div:nth-child(2) > div > div > div > div > div > div:nth-child(2) > div:nth-child(2) > div > img')
         // .click('#root > div > div:nth-child(2) > content > div > div > div > div > div:nth-child(5) > div > div > div.col-xs-12.alert.alert-msg.xs-p-10.xs-ml-5 > span > div > button')
 
 
-    .catch(error => {
-        console.error('Liquidação failed:', error)
-    });
+        .catch(error => {
+            console.error('Liquidação failed:', error)
+        });
 }
 
 module.exports = {
