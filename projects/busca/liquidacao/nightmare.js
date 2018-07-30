@@ -42,17 +42,18 @@ const run = () => {
 
         //search flight roundTrip
         .wait(4000)
-        .type('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > input', 'REC')
+        .type('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > input', 'LIMA')
         .wait('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
         .click('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
-        .type('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > input', 'SAO')
+        .type('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > input', 'GRU')
         .wait('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
         .click('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
        
 
         //error validate 15 days
-        .type('#date_starting', moment().add(1,'day').format('DD/MM/YYYY'))
-        .type('#date_back',     moment().add(3,'days').format('DD/MM/YYYY'))
+        // .type('#date_starting', moment().add(1,'day').format('DD/MM/YYYY'))
+        .type('#date_starting', '02/06/2018')
+        // .type('#date_back',     moment().add(3,'days').format('DD/MM/YYYY'))
        
 
         // .type('#date_starting', moment().add(16,'days').format('DD/MM/YYYY'))
