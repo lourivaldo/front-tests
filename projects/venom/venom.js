@@ -1,8 +1,8 @@
-const recovery  = require('./recovery/recovery');
-const transfer  = require('./transfer/transfer');
-const debit     = require('./debit/debit');
-const credit    = require('./credit/credit');
-const pagseguro = require('./pagseguro/pagseguro');
+const recovery  = require('./test/recovery/recovery');
+const transfer  = require('./test/transfer/transfer');
+const debit     = require('./test/debit/debit');
+const credit    = require('./test/credit/credit');
+const pagseguro = require('./test/pagseguro/pagseguro');
 
 module.exports = {
     recovery:  recovery,
