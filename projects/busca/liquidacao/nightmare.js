@@ -16,7 +16,7 @@ const run = () => {
         .viewport(1000,800)
         .goto('http://localhost:3333/')
 
-
+        
         //login
         .click('div.button-enter button.btn-defaut')
         .insert('input[type="email"]', EMAIL)
@@ -59,15 +59,15 @@ const run = () => {
         // .type('#date_back',     moment().add(18,'days').format('DD/MM/YYYY'))
 
         // .select('#root > div > div:nth-child(2) > content > div > div > div:nth-child(1) > div > div > div > form > div.col-md-9.col-xs-12 > section > div.flight-row > fieldset.date-passengers.col-xs-12 > div.passengers.col-xs-12.col-sm-6.col-md-6 > div > label:nth-child(1) > select', '2')
-        .click('.logo-tam')
-        .click('.logo-azul')
-        .click('.logo-gol')
+        // .click('.logo-tam')
+        // .click('.logo-azul')
+        // .click('.logo-gol')
         .click('#btn-buscar-voos')
         .wait('.numero-voo')
 
 
         //chose flights
-        .click('#tab-ida > form > div:nth-child(1) > div > div > div:nth-child(1) > span.box-escolha > input[type="radio"]')
+        .click('#tab-ida > form > div > div > div:nth-child(1)')
         .click('#tab-volta > div:nth-child(3) > div > div > div:nth-child(1) > span.box-escolha > input[type="radio"]')
         .click('#btn-opcoes > div > div > button')
 
@@ -82,8 +82,8 @@ const run = () => {
         .insert('input[name="surname"]', 'teste transfer')
         .type('#adult-gender', 'M')
         .insert('input[name="birthday"]', '26/03/1996')
-        .click('#check-terms')
-        .click('#form-op > div:nth-child(3) > div > div.col-md-4.col-sm-12 > button')
+        // .click('#check-terms')
+        // .click('#form-op > div:nth-child(3) > div > div.col-md-4.col-sm-12 > button')
 
 
         //billet form
