@@ -18,7 +18,8 @@
     "venom:pagseguro": "PROJECT=VENOM NAME=PAGSEGURO node test.js",
     "venom:pagseguro:test": "PROJECT=VENOM NAME=PAGSEGURO TYPE=TEST mocha",
     "venom:liquidacao": "PROJECT=VENOM NAME=LIQUIDACAO node test.js",
-    "venom:liquidacao:test": "PROJECT=VENOM NAME=LIQUIDACAO TYPE=TEST mocha"
+    "venom:liquidacao:test": "PROJECT=VENOM NAME=LIQUIDACAO TYPE=TEST mocha",
+    "venom:coupon": "PROJECT=VENOM NAME=COUPON node test.js"
   },
   "author": "Marcio Henrique",
   "license": "ISC",
@@ -26,6 +27,7 @@
     "dotenv": "^5.0.1",
     "mocha": "^5.1.1",
     "moment": "^2.22.1",
-    "nightmare": "^3.0.1"
+    "nightmare": "^3.0.1",
+    "puppeteer": "^1.6.1"
   }
 }
