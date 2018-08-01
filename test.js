@@ -43,7 +43,7 @@ if (project === 'VENOM') {
 
         case 'COUPON':
             const busca_coupon = busca.coupon;
-            type ? busca_coupon.mocha.run() : busca_coupon.puppeteer.run();
+            type ? busca_coupon.mocha.run() : busca_coupon.run();
             break;
 
     }
