@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer');
-const busca = require('./projects/busca/modules/modules');
+const busca = require('../../modules');
 const config = {
     after_15_days: false,
     loops: 1,
