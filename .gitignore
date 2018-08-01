@@ -2,3 +2,4 @@
 .env
 .idea
 npm-debug.log
+config.js

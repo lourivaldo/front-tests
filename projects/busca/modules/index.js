@@ -145,13 +145,13 @@ const search = async (page, after_15_days, companies) => {
     const date_back = after_15_days ? 18 : 3;
 
     await page.waitFor(4000);
-    await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > input', 'REC')
-    await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
-    await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
+    await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > input', 'REC');
+    await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)');
+    await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)');
     await page.waitFor(200);
-    await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > input', 'SAO')
-    await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
-    await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
+    await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > input', 'SAO');
+    await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)');
+    await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)');
     await page.type('#date_starting', moment().add(date_starting, 'day').format('DD/MM/YYYY'));
     await page.type('#date_back', moment().add(date_back, 'days').format('DD/MM/YYYY'));
     
@@ -266,9 +266,18 @@ const test = async (page, config) => {
 };
 
 const $module = {
-    go, login, openSearch,
-    search, selectFlight, cheat: byPassHeadlessDetection,
-    confirmFlights, confirmTerms, basics, setCoupon, test};
+    go,
+    login,
+    openSearch,
+    search,
+    selectFlight,
+    cheat: byPassHeadlessDetection,
+    confirmFlights,
+    confirmTerms,
+    basics,
+    setCoupon,
+    test
+};
 
 
 module.exports = $module;
