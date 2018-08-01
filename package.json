@@ -5,6 +5,7 @@
   "repository": "https://bitbucket.org/marcius_hsdl/mangue3-teste",
   "main": "test.js",
   "scripts": {
+    "busca:searches": "PROJECT=BUSCA NAME=SEARCHES node test.js",
     "busca:coupon": "PROJECT=BUSCA NAME=COUPON node test.js",
     "busca:coupon:test": "PROJECT=BUSCA NAME=LIQUIDACAO TYPE=TEST mocha",
     "venom:debit": "PROJECT=VENOM NAME=DEBIT node test.js",

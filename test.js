@@ -41,6 +41,11 @@ if (project === 'VENOM') {
 } else if (project === 'BUSCA') {
     switch (name) {
 
+        case 'SEARCHES':
+            const busca_searches = busca.searches;
+            type ? busca_searches.mocha.run() : busca_searches.run();
+            break;
+
         case 'COUPON':
             const busca_coupon = busca.coupon;
             type ? busca_coupon.mocha.run() : busca_coupon.run();

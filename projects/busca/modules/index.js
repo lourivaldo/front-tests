@@ -11,7 +11,7 @@ const _ = require('lodash');
  * @param page
  * @returns {Promise<void>}
  */
-const byPassHeadlessDetection = async (page) => {
+const byPassHeadlessDetection = async (page, config) => {
 
     // Burlas test de webdriver
     await page.evaluateOnNewDocument(() => {
@@ -96,7 +96,7 @@ const byPassHeadlessDetection = async (page) => {
  * @param page
  * @returns {Promise<void>}
  */
-const go = async (page) => {
+const go = async (page, config) => {
     await page.goto(URL_BUSCA);
 };
 
@@ -106,62 +106,143 @@ const go = async (page) => {
  * @param page
  * @returns {Promise<void>}
  */
-const login = async (page) => {
+const login = async (page, config) => {
+
     await page.click('div.button-enter button.btn-defaut');
+    await page.waitFor(200);
     await page.type('input[type="email"]', EMAIL);
     await page.type('input[type="password"]', PASS_MANGUE3);
     await page.click('div.action-login button.b-btn.b-btn-default.btn-block');
 
+    return await page.waitForSelector('#banner-home');
 };
-
 
 /**
  *
  * @param page
  * @returns {Promise<void>}
  */
-const openSearch = async (page) => {
-    await page.waitForSelector('#banner-home');
+const navigateToSearch = async (page, config) => {
 
     //go to search page
     await page.evaluate(() => {
         const elements = Array.from(document.querySelectorAll('a')).filter(a => /BUSCAR PASSAGENS/.test(a.innerText));
-        elements[0].className += "btn-busca-nightmare";
+        elements[0].className += " btn-buscar-voos-bot";
     });
-    await page.click('.btn-busca-nightmare')
 
+    return await page.click('.btn-buscar-voos-bot');
 };
 
+const openSearch = async (page, config) => {
+
+    const url = await page.evaluate(() => {
+        return document.location.origin;
+    });
+
+    await page.goto(url + '/#/busca');
+    await page.reload();
+    await page.waitFor(200);
+};
+
+const getSearch = async (config, random = false) => {
+
+    if(random){
+
+        let origin        = null;
+        let destination   = null;
+        let departureDate = null;
+        let returnDate    = null;
+
+        do {
+            origin = _.sample(config.origins);
+            destination = _.sample(config.destinations);
+
+            let dates = _.sample(config.dates);
+
+            departureDate = moment().add(dates.departure, 'day');
+            if(dates.return) returnDate = moment().add(dates.return, 'day');
+
+        } while (origin == destination);
+
+        return {
+            'origin': origin,
+            'destination': destination,
+            'departure': departureDate,
+            'return': returnDate
+        };
+
+    }else{
+
+        return {
+            'origin':      config.static_search.origin,
+            'destination': config.static_search.destination,
+            'departure':   moment(config.static_search.departure),
+            'return':      moment(config.static_search.return)
+        };
+    }
+};
+
+const checkCompanies = async (page, config) => {
+
+    await _.forEach(config.companies, async (check, company) => {
+
+        const checked = page.evaluate((company) => {
+            return document.querySelector('#radio-' + company).checked;
+        }, company);
+
+        if(check != checked){//ERRRRRRRRRRRRRRRRRRRRRRRR
+            await page.click(`.logo-${company}`);
+        }
+    });
+
+    return page;
+};
 
 /**
  *
  * @param page
- * @param after_15_days
- * @param companies
+ * @param config
  * @returns {Promise<void>}
  */
-const search = async (page, after_15_days, companies) => {
-    const date_starting = after_15_days ? 16 : 1;
-    const date_back = after_15_days ? 18 : 3;
+const search = async (page, config) => {
 
-    await page.waitFor(4000);
-    await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > input', 'REC')
-    await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
-    await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
-    await page.waitFor(200);
-    await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > input', 'SAO')
-    await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
-    await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
-    await page.type('#date_starting', moment().add(date_starting, 'day').format('DD/MM/YYYY'));
-    await page.type('#date_back', moment().add(date_back, 'days').format('DD/MM/YYYY'));
-    
-    await _.forEach(companies, async (value, company) => {
-        !value && await page.click(`.logo-${company}`);
-        
-    });
-    await page.waitFor(200);
-    await page.click('#btn-buscar-voos')
+    try{
 
+        const search = await getSearch(config, config.random);
+
+        await page.waitFor(2000);
+
+        await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > input', search.origin)
+        await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
+        await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
+
+        await page.waitFor(200);
+
+        await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > input', search.destination)
+        await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
+        await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
+
+        await page.type('#date_starting', search.departure.format('DD/MM/YYYY'));
+
+        if(search.return) await page.type('#date_back', search.return.format('DD/MM/YYYY'));
+
+        await checkCompanies(page, config);
+
+        await page.waitFor(200);
+        await page.click('#btn-buscar-voos');
+
+        await page.waitFor(200);
+        await page.waitForSelector('.busca-loading-bar.loading');
+
+        //End of search
+        await page.waitForFunction("!document.querySelector('.busca-loading-bar.loading')", {timeout:0});
+
+    }catch(error){
+        console.log(error);
+        return false;
+    }
+
+    return true;
 };
 
 
@@ -178,7 +259,6 @@ const findFLight = async (page, type) => {
     return await page.evaluate(($type) => {
         const selector = `#tab-${$type} > div:nth-child(3) > div > div > div:nth-child(1) > input[type=radio]`;
         return document.querySelector(selector).id;
-
     }, type);
 
 };
@@ -266,9 +346,19 @@ const test = async (page, config) => {
 };
 
 const $module = {
-    go, login, openSearch,
-    search, selectFlight, cheat: byPassHeadlessDetection,
-    confirmFlights, confirmTerms, basics, setCoupon, test};
+    go,
+    login,
+    navigateToSearch,
+    openSearch,
+    search,
+    selectFlight,
+    cheat: byPassHeadlessDetection,
+    confirmFlights,
+    confirmTerms,
+    basics,
+    setCoupon,
+    test
+};
 
 
 module.exports = $module;
