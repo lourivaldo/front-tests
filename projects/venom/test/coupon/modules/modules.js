@@ -105,9 +105,7 @@ const goSearch = async (page, roundTrip = false) => {
  * @param type
  * @returns {Promise<void>}
  */
-const findFLight = async (page, type) => {
-    await page.waitForSelector('#home');
-
+const findFlight = async (page, type) => {
     return await page.evaluate(($type) => (
         document.querySelector(`#form-${$type} > div:nth-child(3) > center > div > div.col-md-2.col-xs-3.flybox-in.flybox-company > div > div:nth-child(1) > div > input`).id
     ), type);
@@ -122,26 +120,36 @@ const findFLight = async (page, type) => {
  * @returns {Promise<void>}
  */
 const selectFlight = async (page, round_trip = false) => {
-    let departure_id = await findFLight(page, 'ida');
+    await page.waitForSelector('#home');
+    await page.waitFor(2000);
 
+    let departure_id = await findFlight(page, 'ida');
     await page.evaluate(id => {
         document.getElementById(id).style.display = 'block';
     }, departure_id);
 
+    console.log('flight', departure_id)
+
+    await page.waitForSelector(`#${departure_id}`);
     await page.click(`#${departure_id}`);
 
     if (round_trip) {
-        let return_id = await findFLight(page, 'volta');
+        await page.waitForSelector('a[href="#menu1"]');
+        await page.click('a[href="#menu1"]');
+
+        let return_id = await findFlight(page, 'volta');
+        console.log('flightBack', return_id)
 
         await page.evaluate(id => {
             document.getElementById(id).style.display = 'block';
         }, return_id);
 
-        await page.click(`#${departure_id}`);
+        await page.waitForSelector(`#${return_id}`);
+        await page.click(`#${return_id}`);
     }
 
-    await page.waitForSelector('#root > div > div.be-wrapper.be-nosidebar-left > div > div > div > div:nth-child(4) > div > div > div.animated.fadeIn.panel-footer.md-pt-10.lg-pt-10.xs-pt-10.sm-pt-10 > button')
-    await page.click('#root > div > div.be-wrapper.be-nosidebar-left > div > div > div > div:nth-child(4) > div > div > div.animated.fadeIn.panel-footer.md-pt-10.lg-pt-10.xs-pt-10.sm-pt-10 > button')
+    await page.waitForSelector('.animated.fadeIn.panel-footer > button');
+    await page.click('.animated.fadeIn.panel-footer > button');
 };
 
 
