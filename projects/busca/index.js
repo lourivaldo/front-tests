@@ -1,5 +1,3 @@
-const liquidacao = require('./liquidacao/liquidacao');
+const coupon = require('./tests/coupon');
 
-module.exports = {
-    liquidacao: liquidacao
-}
+module.exports = { coupon }

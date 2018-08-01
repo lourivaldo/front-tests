@@ -1,10 +1,11 @@
 require('dotenv').config();
 const EMAIL = process.env.EMAIL;
-const PASS_INBOX = process.env.PASS_INBOX;
+const URL_BUSCA = process.env.URL_BUSCA;
 const PASS_MANGUE3 = process.env.PASS_MANGUE3;
 const moment = require('moment');
+const _ = require('lodash');
 
-
+ 
 /**
  *
  * @param page
@@ -96,7 +97,7 @@ const byPassHeadlessDetection = async (page) => {
  * @returns {Promise<void>}
  */
 const go = async (page) => {
-    await page.goto('http://localhost:3333');
+    await page.goto(URL_BUSCA);
 };
 
 
@@ -135,31 +136,30 @@ const openSearch = async (page) => {
 /**
  *
  * @param page
+ * @param after_15_days
+ * @param companies
  * @returns {Promise<void>}
  */
-const search = async (page) => {
+const search = async (page, after_15_days, companies) => {
+    const date_starting = after_15_days ? 16 : 1;
+    const date_back = after_15_days ? 18 : 3;
+
     await page.waitFor(4000);
     await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > input', 'REC')
     await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
     await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(1) > div > div > ul > li:nth-child(1)')
+    await page.waitFor(200);
     await page.type('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > input', 'SAO')
     await page.waitForSelector('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
     await page.click('fieldset.origin-destination.col-xs-12 > label:nth-child(2) > div > div > ul > li:nth-child(1)')
-
-
-    //error validate 15 days
-    await page.type('#date_starting', moment().add(1, 'day').format('DD/MM/YYYY'));
-    await page.type('#date_back', moment().add(3, 'days').format('DD/MM/YYYY'));
-
-
-    // .type('#date_starting', moment().add(16,'days').format('DD/MM/YYYY'))
-    // .type('#date_back',     moment().add(18,'days').format('DD/MM/YYYY'))
-
-
-    // await page.click('.logo-tam')
-    await page.click('.logo-avianca');
-    await page.click('.logo-azul');
-    // await page.click('.logo-gol')
+    await page.type('#date_starting', moment().add(date_starting, 'day').format('DD/MM/YYYY'));
+    await page.type('#date_back', moment().add(date_back, 'days').format('DD/MM/YYYY'));
+    
+    await _.forEach(companies, async (value, company) => {
+        !value && await page.click(`.logo-${company}`);
+        
+    });
+    await page.waitFor(200);
     await page.click('#btn-buscar-voos')
 
 };
@@ -176,9 +176,9 @@ const findFLight = async (page, type) => {
 
 
     return await page.evaluate(($type) => {
-        console.log(Array.from(document.querySelector(`#tab-ida > div:nth-child(3) > div > div > div:nth-child(1)`)));
+        const selector = `#tab-${$type} > div:nth-child(3) > div > div > div:nth-child(1) > input[type=radio]`;
+        return document.querySelector(selector).id;
 
-        return Array.from(document.querySelector(`#tab-${$type}:nth-child(3)`))[0].id
     }, type);
 
 };
@@ -192,16 +192,83 @@ const findFLight = async (page, type) => {
  */
 const selectFlight = async (page, round_trip) => {
     await page.click(`#${await findFLight(page, 'ida')}`);
-    round_trip && await page.click(`#${await findFLight(page, 'volta')}`);
+    if (round_trip) {
+        await page.click('#tabs > li:nth-child(2) > a');
+        await page.click(`#${await findFLight(page, 'volta')}`);
+    }
 
 };
 
 
 /**
  *
- * @type {{go: go, login: login, openSearch: openSearch, search: search, selectFlight: selectFlight, cheat: byPassHeadlessDetection}}
+ * @param page
+ * @returns {Promise<void>}
  */
-const $module = { go, login, openSearch, search, selectFlight, cheat: byPassHeadlessDetection };
+const confirmFlights = async (page) => {
+    await page.click('#btn-opcoes > div > div > button');
+};
+
+
+/**
+ *
+ * @param page
+ * @returns {Promise<void>}
+ */
+const confirmTerms = async (page) => {
+    await page.waitForSelector('#modal-conditional > div > div > div.modal-footer > div > button.btn.btn-success');
+    await page.click('#modal-conditional > div > div > div.modal-footer > div > button.btn.btn-success');
+
+};
+
+
+/**
+ *
+ * @param page
+ * @param config
+ * @returns {Promise<void>}
+ */
+const basics = async (page, config) => {
+    await go(page);
+    await login(page);
+    await openSearch(page);
+    await search(page, config.after_15_days, config.companies);
+    await selectFlight(page, config.round_trip);
+    await confirmFlights(page);
+    await confirmTerms(page);
+};
+
+
+/**
+ *
+ * @param page
+ * @returns {Promise<void>}
+ */
+const setCoupon = async (page) => {
+    const accordeon = '#root > div > div:nth-child(2) > content > div > div > div > div > div > div > div.animated.fadeInLeft > div:nth-child(1) > div > div.panel-heading.panel-heading-divider.form-title';
+    await page.waitForSelector(accordeon);
+    await page.click(accordeon);
+    await page.type('#coupon-input', 'UGCGKCVG');
+
+};
+
+
+const test = async (page, config) => {
+    // await go(page);
+    // await login(page);
+    // await openSearch(page);
+    // for(let i = 0; i < config.loops; i++) {
+    //     await search(page, config.after_15_days, config.companies);
+
+    //     // await page.event.requestfinished();
+    // }
+    
+};
+
+const $module = {
+    go, login, openSearch,
+    search, selectFlight, cheat: byPassHeadlessDetection,
+    confirmFlights, confirmTerms, basics, setCoupon, test};
 
 
 module.exports = $module;

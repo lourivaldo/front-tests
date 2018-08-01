@@ -5,8 +5,8 @@
   "repository": "https://bitbucket.org/marcius_hsdl/mangue3-teste",
   "main": "test.js",
   "scripts": {
-    "busca:liquidacao": "PROJECT=BUSCA NAME=LIQUIDACAO node test.js",
-    "busca:liquidacao:test": "PROJECT=BUSCA NAME=LIQUIDACAO TYPE=TEST mocha",
+    "busca:coupon": "PROJECT=BUSCA NAME=COUPON node test.js",
+    "busca:coupon:test": "PROJECT=BUSCA NAME=LIQUIDACAO TYPE=TEST mocha",
     "venom:debit": "PROJECT=VENOM NAME=DEBIT node test.js",
     "venom:debit:test": "PROJECT=VENOM NAME=DEBIT TYPE=TEST mocha",
     "venom:credit": "PROJECT=VENOM NAME=CREDIT node test.js",
@@ -25,6 +25,7 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^5.0.1",
+    "lodash": "^4.17.10",
     "mocha": "^5.1.1",
     "moment": "^2.22.1",
     "nightmare": "^3.0.1",
