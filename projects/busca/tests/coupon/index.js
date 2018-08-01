@@ -5,10 +5,10 @@ const config = {
     loops: 1,
     round_trip: true,
     companies: {
-        avianca: true,
+        avianca: false,
         tam: true,
         gol: true,
-        azul: true
+        azul: false
     }
 };
 
