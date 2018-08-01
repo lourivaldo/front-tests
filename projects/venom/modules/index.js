@@ -12,12 +12,6 @@ const moment = require('moment');
  */
 const byPassHeadlessDetection = async (page) => {
 
-    // // Burlas test de webdriver
-    // await page.evaluateOnNewDocument(() => {
-    //     Object.defineProperty(navigator, 'webdriver', {
-    //         get: () => false
-    //     });
-    // });
 
     // Burlar teste de chrome
     await page.evaluateOnNewDocument(() => {
@@ -25,50 +19,7 @@ const byPassHeadlessDetection = async (page) => {
             runtime: {}
         };
     });
-
-    // // Burlar teste de tamanho de plugins
-    // await page.evaluateOnNewDocument(() => {
-    //     // Sobreescreve a propriedade `plugins` , para usar  um getter personalizado.
-    //     Object.defineProperty(navigator, 'plugins', {
-    //         // So precisa ter `length > 0`
-    //         get: () => [1, 2, 3, 4, 5]
-    //     });
-    // });
-
-    // // Burlar teste de  Linguagem.
-    // await page.evaluateOnNewDocument(() => {
-    //     // Sobreescreve a propriedade `plugins` , para usar  um getter personalizado.
-    //     Object.defineProperty(navigator, 'languages', {
-    //         get: () => ['en-US', 'en']
-    //     });
-    // });
-
-    // // Burlar teste de iframe
-    // await page.evaluateOnNewDocument(() => {
-    //     Object.defineProperty(HTMLIFrameElement.prototype, 'contentWindow', {
-    //         get: function () {
-    //             return window;
-    //         }
-    //     });
-    // });
-
-    // // Burlar teste toString, ( quebra console.debug() )
-    // await page.evaluateOnNewDocument(() => {
-    //     window.console.debug = () => {
-    //         return null;
-    //     };
-    // });
 };
-
-
-// /**
-//  *
-//  * @param page
-//  * @returns {Promise<void>}
-//  */
-// const loginPage = async (page) => {
-//     await page.goto(URL+'/#/login');
-// };
 
 
 /**
@@ -124,13 +75,11 @@ const selectFlight = async (page, round_trip = false) => {
     await page.waitFor(2000);
 
     let departure_id = await findFlight(page, 'ida');
+
     await page.evaluate(id => {
         document.getElementById(id).style.display = 'block';
     }, departure_id);
 
-    console.log('flight', departure_id)
-
-    await page.waitForSelector(`#${departure_id}`);
     await page.click(`#${departure_id}`);
 
     if (round_trip) {
@@ -138,7 +87,6 @@ const selectFlight = async (page, round_trip = false) => {
         await page.click('a[href="#menu1"]');
 
         let return_id = await findFlight(page, 'volta');
-        console.log('flightBack', return_id)
 
         await page.evaluate(id => {
             document.getElementById(id).style.display = 'block';
