@@ -36,7 +36,7 @@ const config = {
         {departure:50, return: null},
         {departure:60, return: null}
     ],
-    loops: 10,
+    loops: 10000,
     companies: {
         avianca: false,
         tam: true,
