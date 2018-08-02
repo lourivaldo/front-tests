@@ -186,11 +186,13 @@ const checkCompanies = async (page, config) => {
 
     await _.forEach(config.companies, async (check, company) => {
 
-        const checked = page.evaluate((company) => {
-            return document.querySelector('#radio-' + company).checked;
+        const isChecked = await page.evaluate((company) => {
+            let el = document.querySelector(`#radio-${company}`);
+            return el ? el.checked : null;
         }, company);
 
-        if(check != checked){//ERRRRRRRRRRRRRRRRRRRRRRRR
+
+        if(isChecked !== null && check !== isChecked){
             await page.click(`.logo-${company}`);
         }
     });
@@ -232,7 +234,7 @@ const search = async (page, config) => {
         await page.click('#btn-buscar-voos');
 
         await page.waitFor(200);
-        await page.waitForSelector('.busca-loading-bar.loading');
+        await page.waitForSelector('.busca-loading-bar.loading', {timeout:60000});
 
         //End of search
         await page.waitForFunction("!document.querySelector('.busca-loading-bar.loading')", {timeout:0});
