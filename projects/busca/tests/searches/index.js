@@ -50,7 +50,8 @@ const run = async () => {
 
     const browser = await puppeteer.launch({
         headless: process.env.PPUPPETEER_HEADLESS === 'true',
-        timeout: 60 * 5 * 1000
+        timeout: 60 * 5 * 1000,
+        args: ['--no-sandbox', '--disable-setuid-sandbox']
     });
 
     const page = (await browser.pages())[0];
