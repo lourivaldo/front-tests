@@ -5,7 +5,6 @@ const PASS_MANGUE3 = process.env.PASS_MANGUE3;
 const moment = require('moment');
 const _ = require('lodash');
 
- 
 /**
  *
  * @param page
@@ -97,6 +96,7 @@ const byPassHeadlessDetection = async (page, config) => {
  * @returns {Promise<void>}
  */
 const go = async (page, config) => {
+    console.log(URL_BUSCA);
     await page.goto(URL_BUSCA);
 };
 
